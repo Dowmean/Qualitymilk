@@ -7,30 +7,30 @@ import streamlit as st
 
 
 def Milkk():
-    st.markdown(
-        f"""
-    <style>
-    .stApp {{
-    background-image: url("https://i.pinimg.com/564x/96/5e/a7/965ea70b65abee7193be16817c64d4d2.jpg");
-    background-attachment: fixed;
-    background-size: cover;
-    /* opacity: 0.3; */
-    }}
-    </style>
-    """,
-        unsafe_allow_html=True
-    )
+    # st.markdown(
+    #     f"""
+    # <style>
+    # .stApp {{
+    # background-image: url("https://i.pinimg.com/564x/96/5e/a7/965ea70b65abee7193be16817c64d4d2.jpg");
+    # background-attachment: fixed;
+    # background-size: cover;
+    # /* opacity: 0.3; */
+    # }}
+    # </style>
+    # """,
+    #     unsafe_allow_html=True
+    # )
 
     st.title('✧ ₊𓍯 โปรแกรมคำนวณคุณภาพของนม ⌒✧🐄')
     st.subheader('𓂂𓉸*゜Awaiting your input°•*⁀➷')  # โชว์errorเมื่อใส่ข้อมูลเข้าไปจะใช้งานได้
 
-    def load_data():
+    def load_data(): #โหลดข้อมูล
         return pd.read_csv('milknew.csv')
 
-    def save_model(m):
+    def save_model(m): #saveModel
         joblib.dump(m, 'model.joblib')
 
-    def load_model():
+    def load_model(): #โหลดโมเดล
         return joblib.load('model.joblib')
 
     data = load_data()
@@ -40,7 +40,7 @@ def Milkk():
     X = data1.drop(['Colour'], axis=1)
     y = data['Grade']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=2)
-    model = DecisionTreeClassifier()
+    model = DecisionTreeClassifier() #สร้างmodel
     model.fit(X_train, y_train)
     save_model(model)
     ph = st.slider('ꕁpH (ค่าpH)🧪', 3.0, 9.5)
@@ -63,10 +63,10 @@ def Milkk():
     turbidity = st.radio('ꕁTurbidity (ความขุ่น)🫧 1 = High, 0 = Low', (0, 1))
     st.info('นมที่ดีควรมีสีขาวหรือเป็นสีของกลิ่นรสชาตินมนั้นๆ ไม่ควรมีลักษะตกตะกอนเป็นสีใสหรือเป็นก้อน')
 
-    preb = st.button('Prediction')
+    preb = st.button('Prediction') 
     if preb:
         model = load_model()
-        predic = model.predict([[ph, temp, taste, smell, fat, turbidity]])
+        predic = model.predict([[ph, temp, taste, smell, fat, turbidity]]) #ทำนายM0del
         if predic[0] == 0:
             st.write('Quality of milk is :red[low]')
         elif predic[0] == 1:
